@@ -1,6 +1,8 @@
+#include <iostream>
+
 class Deck {
     public:
-
+    
         int cardDeck[52] = {
             1,2,3,4,
             5,6,7,8,
@@ -17,8 +19,12 @@ class Deck {
             49,50,51,52
         };
 
+        Deck();
         void shuffle();
         int draw();
+
+        // Put this in private when done.
+        void swap(int &a, int &b);
 
     private:
         int *topCard;
