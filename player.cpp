@@ -12,6 +12,12 @@ void Deck::shuffle() {
         randInt = rand() % i;
         swap(cardDeck[i], cardDeck[randInt]);
     }
+
+    topCard = &cardDeck[0];
+}
+
+int Deck::deal() {
+    return *(topCard++);
 }
 
 void Deck::swap(int &a, int &b) {

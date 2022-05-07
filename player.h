@@ -2,6 +2,7 @@
 
 class Deck {
     public:
+        Deck();
     
         int cardDeck[52] = {
             1,2,3,4,
@@ -19,13 +20,23 @@ class Deck {
             49,50,51,52
         };
 
-        Deck();
+        int deal();
         void shuffle();
         int draw();
 
-        // Put this in private when done.
-        void swap(int &a, int &b);
-
     private:
         int *topCard;
+        void swap(int &a, int &b);
+};
+
+class Dealer {
+    public:
+        int hand[21];
+        int handSize;
+};
+
+class Player: public Dealer {
+    public:
+        char name;
+        int money;
 };
