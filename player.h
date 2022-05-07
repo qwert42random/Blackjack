@@ -37,6 +37,6 @@ class Dealer {
 
 class Player: public Dealer {
     public:
-        char name;
+        std::string name;
         int money;
 };
