@@ -38,5 +38,10 @@ class Dealer {
 class Player: public Dealer {
     public:
         std::string name;
-        int money;
+        int money = 500;
+        int splitHand[21];
+        bool split;
+        int move;
+        int playerBet;
+        
 };
