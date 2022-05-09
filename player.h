@@ -1,4 +1,6 @@
 #include <iostream>
+#include <cstdlib>
+#include <ctime>
 
 class Deck {
     public:
@@ -22,7 +24,6 @@ class Deck {
 
         int deal();
         void shuffle();
-        int draw();
 
     private:
         int *topCard;
@@ -33,7 +34,8 @@ class Dealer {
     public:
         int hand[21];
         int handSize;
-	int handValue();
+	int calcHandValue();
+	int handValue = 0;
 };
 
 class Player: public Dealer {
@@ -41,7 +43,6 @@ class Player: public Dealer {
         std::string name;
         int money = 500;
         int splitHand[21];
-        bool split;
         int move;
         
 };

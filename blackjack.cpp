@@ -11,15 +11,14 @@ int main() {
     std::cout << "Blackjack C++ Edition" << std::endl;
     std::cout << "Enter Name: ";
     std::cin >> player.name;
-    deck.shuffle();
 
     // While player still has money.
     while(player.money > 0) {
         
         bool validBet = false;
-	int playerBet;
+		int playerBet;
 
-	// TODO: Maybe shove this into while loop as well?
+		// TODO: Maybe shove this into while loop as well?
         do {
             std::cout << "Enter bet amount (max: " << player.money << "): ";
             std::cin >> playerBet;
@@ -27,28 +26,59 @@ int main() {
             if (std::cin.fail()) {
                 std::cout << "Invalid: Input not recognized." << std::endl;
 
-		// Flush buffer to allow another input.
+				// Flush buffer to allow another input.
                 std::cin.clear();
                 std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            } else if (playerBet < 0 || playerBet > playerMoney) {
-	    	std::cout << "Invalid amount" << std::endl;
+            } else if (playerBet < 0 || playerBet > player.money) {
+				std::cout << "Invalid amount" << std::endl;
 
-		// Flush buffer to allow another input.
-		std::cin.clear();
-		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-	    } else {
+				// Flush buffer to allow another input.
+				std::cin.clear();
+				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+			} else {
                 validBet = true;
-                std::cout << player.name  << "You entered: " << playerBet << std::endl;
+                std::cout << player.name  << " entered: " << playerBet << std::endl;
             }
 
         } while (validBet == false);
 
-	player.playerMoney -= playerBet;
+		player.money -= playerBet;
 
-	// Deal the initial hand.
-        break;
-    }
+		deck.shuffle();
+
+		// Reset hand sizes member.
+		dealer.handSize = 0;
+		player.handSize = 0;
+
+		// Deal the initial hand.
+		for (int i = 0; i < 2; i++) {
+			dealer.hand[i] = deck.deal();
+			dealer.handSize++;
+
+			player.hand[i] = deck.deal();
+			player.handSize++;
+		}
+
+		bool split = false;
+
+		while (true) {
+
+			// Print Dealer's hand.
+			std::cout << "Dealer's Hand: ";
+			std::cout << "(" << dealer.calcHandValue() << ")" << std::endl;
+
+			if (split == true) {
+			}
+
+			std::cout << player.name << "'s Move (hit, split, doubleDown, stand, surrender): ";
+			std::cin >> player.move;
 
 
-    return 0;
+		}
+
+		break;
+	}
+
+
+	return 0;
 }
