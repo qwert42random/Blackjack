@@ -33,6 +33,7 @@ class Dealer {
     public:
         int hand[21];
         int handSize;
+	int handValue();
 };
 
 class Player: public Dealer {
@@ -42,6 +43,5 @@ class Player: public Dealer {
         int splitHand[21];
         bool split;
         int move;
-        int playerBet;
         
 };

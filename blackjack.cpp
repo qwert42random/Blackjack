@@ -17,23 +17,35 @@ int main() {
     while(player.money > 0) {
         
         bool validBet = false;
+	int playerBet;
 
+	// TODO: Maybe shove this into while loop as well?
         do {
             std::cout << "Enter bet amount (max: " << player.money << "): ";
-            std::cin >> player.playerBet;
+            std::cin >> playerBet;
 
             if (std::cin.fail()) {
-                std::cout << "Invalid input" << std::endl;
+                std::cout << "Invalid: Input not recognized." << std::endl;
+
+		// Flush buffer to allow another input.
                 std::cin.clear();
                 std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            } else {
+            } else if (playerBet < 0 || playerBet > playerMoney) {
+	    	std::cout << "Invalid amount" << std::endl;
+
+		// Flush buffer to allow another input.
+		std::cin.clear();
+		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+	    } else {
                 validBet = true;
-                std::cout << "You entered: " << player.playerBet << std::endl;
+                std::cout << player.name  << "You entered: " << playerBet << std::endl;
             }
 
         } while (validBet == false);
 
+	player.playerMoney -= playerBet;
 
+	// Deal the initial hand.
         break;
     }
 

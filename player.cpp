@@ -27,3 +27,8 @@ void Deck::swap(int &a, int &b) {
     a = b;
     b = temp;
 }
+
+int Dealer::handValue() {
+	return 0;
+}
+
