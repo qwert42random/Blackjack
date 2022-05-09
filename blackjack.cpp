@@ -59,6 +59,11 @@ int main() {
 			player.handSize++;
 		}
 
+		// TODO: Delete this later when done.
+		for (int i = 0; i < 2; i++) {
+			std::cout << dealer.hand[i] << std::endl;
+		}
+
 		bool split = false;
 
 		while (true) {

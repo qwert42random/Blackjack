@@ -36,6 +36,7 @@ class Dealer {
         int handSize;
 	int calcHandValue();
 	int handValue = 0;
+	void printHand();
 };
 
 class Player: public Dealer {
@@ -44,5 +45,6 @@ class Player: public Dealer {
         int money = 500;
         int splitHand[21];
         int move;
+	int calcSplitHandValue();
         
 };
