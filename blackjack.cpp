@@ -83,6 +83,9 @@ int main() {
 
 			// Print Player's split hand.
 			if (player.split == true) {
+                std::cout << "Split Hand: ";
+                std::cout << printHand(player.splitHand, player.splitHandSize);
+                std::cout << "(" << calcHandValue(player.splitHand, player.splitHandSize) << ")" << std::endl;
 			}
 
 			// Prompt player for move.
@@ -97,6 +100,22 @@ int main() {
 				player.hand[player.handSize++] = deck.deal();
 
 			} else if (move.compare("SPLIT") == 0) {
+
+                if (player.split == false) {
+
+                    player.splitHandSize = 0;
+
+                    player.splitHand[player.splitHandSize++] = deck.deal();
+                    player.splitHand[player.splitHandSize++] = deck.deal();
+
+                    player.split = true;
+
+                } else {
+
+                    std::cout << "Cannot Split" << std::endl;
+
+                }
+
 			} else if (move.compare("DOUBLEDOWN") == 0) {
 
                 // Check if player has enough money.
