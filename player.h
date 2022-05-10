@@ -2,6 +2,9 @@
 #include <cstdlib>
 #include <ctime>
 
+std::string printHand(int *handList, int handListSize);
+int calcHandValue(int *handList, int handListSize);
+
 class Deck {
     public:
         Deck();
@@ -34,9 +37,7 @@ class Dealer {
     public:
         int hand[21];
         int handSize;
-		int calcHandValue();
 		int handValue = 0;
-		std::string printHand(bool holeCard);
 };
 
 class Player: public Dealer {

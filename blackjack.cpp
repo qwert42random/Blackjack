@@ -70,13 +70,13 @@ int main() {
 
 			// Print Dealer's hand.
 			std::cout << "Dealer's Hand: ";
-			std::cout << dealer.printHand(true) << "? ";
-			std::cout << "(" << dealer.calcHandValue() << ")" << std::endl;
+			std::cout << printHand(dealer.hand, 1) << "? ";
+			std::cout << "(" << calcHandValue(dealer.hand, 1) << ")" << std::endl;
 
 			// Print Player's hand.
 			std::cout << player.name << "'s Hand: ";
-			std::cout << player.printHand(false);
-			std::cout << "(" << player.calcHandValue() << ")" << std::endl;
+			std::cout << printHand(player.hand, player.handSize);
+			std::cout << "(" << calcHandValue(player.hand, player.handSize) << ")" << std::endl;
 
 			// Print Player's split hand.
 			if (split == true) {

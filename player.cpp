@@ -28,20 +28,13 @@ void Deck::swap(int &a, int &b) {
     b = temp;
 }
 
-std::string Dealer::printHand(bool holeCard) {
+std::string printHand(int *handList, int handListSize) {
 
 	std::string handString;
-	int count;
 
-	if (holeCard) {
-		count = 1;
-	} else {
-		count = handSize;
-	}
+	for (int i = 0; i < handListSize; i++) {
 
-	for (int i = 0; i < count; i++) {
-
-		switch(hand[i]) {
+		switch(handList[i]) {
 			case 1:
 				handString += "A(S)";
 				break;
@@ -207,30 +200,30 @@ std::string Dealer::printHand(bool holeCard) {
 	return handString;
 }
 
-int Dealer::calcHandValue() {
+int calcHandValue(int *handList, int handListSize) {
 
 	int aceCount = 0;
-	handValue = 0;
+	int handValue = 0;
 
-	for (int i = 0; i < handSize; i++) {
+	for (int i = 0; i < handListSize; i++) {
 
-		if (hand[i] <= 4) {
+		if (handList[i] <= 4) {
 			aceCount++;
-		} else if (hand[i] > 4 && hand[i] < 9) {
+		} else if (handList[i] > 4 && handList[i] < 9) {
 			handValue += 2;
-		} else if (hand[i] > 8 && hand[i] < 13) {
+		} else if (handList[i] > 8 && handList[i] < 13) {
 			handValue += 3;
-		} else if (hand[i] > 12 && hand[i] < 17) {
+		} else if (handList[i] > 12 && handList[i] < 17) {
 			handValue += 4;
-		} else if (hand[i] > 16 && hand[i] < 21) {
+		} else if (handList[i] > 16 && handList[i] < 21) {
 			handValue += 5;
-		} else if (hand[i] > 20 && hand[i] < 25) {
+		} else if (handList[i] > 20 && handList[i] < 25) {
 			handValue += 6;
-		} else if (hand[i] > 24 && hand[i] < 29) {
+		} else if (handList[i] > 24 && handList[i] < 29) {
 			handValue += 7;
-		} else if (hand[i] > 28 && hand[i] < 33) {
+		} else if (handList[i] > 28 && handList[i] < 33) {
 			handValue += 8;
-		} else if (hand[i] > 32 && hand[i] < 37) {
+		} else if (handList[i] > 32 && handList[i] < 37) {
 		   handValue += 9;
 		} else {
 			handValue += 10;
