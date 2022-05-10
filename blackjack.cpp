@@ -66,16 +66,17 @@ int main() {
 
 		player.split = false;
 		std::string move;
+        bool playerMove = true;
 
 		// TODO: If split, keep hitting one hand until finished. Then move to second hand.
-		while (true) {
+		while (playerMove == true) {
 
 			// Print Dealer's hand (but prevent showing hole card).
 			std::cout << "Dealer's Hand: ";
 			std::cout << printHand(dealer.hand, 1) << "? ";
 			std::cout << "(" << calcHandValue(dealer.hand, 1) << ")" << std::endl;
 
-			// Print Player's hand.
+    		// Print Player's hand.
 			std::cout << player.name << "'s Hand: ";
 			std::cout << printHand(player.hand, player.handSize);
 			std::cout << "(" << calcHandValue(player.hand, player.handSize) << ")" << std::endl;
@@ -85,19 +86,38 @@ int main() {
 			}
 
 			// Prompt player for move.
-			std::cout << player.name << "'s Move (hit, split, doubleDown, stand, surrender): ";
+    		std::cout << player.name << "'s Move (hit, split, doubleDown, stand, surrender): ";
 			std::cin >> move;
 			std::transform(move.begin(), move.end(), move.begin(), ::toupper);
 			std::cout << "Move: " << move << std::endl;
 
 			// Progress according to player move input.
 			if (move.compare("HIT") == 0) {
-				player.hand[++player.handSize] = deck.deal();
+
+				player.hand[player.handSize++] = deck.deal();
+
 			} else if (move.compare("SPLIT") == 0) {
 			} else if (move.compare("DOUBLEDOWN") == 0) {
+
+                // Check if player has enough money.
+                if (playerBet * 2 < player.money) {
+                    playerBet * 2;
+                    player.hand[player.handSize++] = deck.deal();
+                    playerMove = false;
+                } else {
+                    std::cout << "Insufficient funds" << std::endl;
+                }
+
 			} else if (move.compare("STAND") == 0) {
-			} else if (move.comapre("SURRENDER") == 0) {
+
+                playerMove = false;
+
+			} else if (move.compare("SURRENDER") == 0) {
+
+                playerMove = false;
+
 			} else {
+                std::cout << "Unrecognised Move" << std::endl;
 			}
 
 		}
