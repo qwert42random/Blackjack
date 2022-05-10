@@ -64,11 +64,13 @@ int main() {
 			std::cout << dealer.hand[i] << std::endl;
 		}
 
-		bool split = false;
+		player.split = false;
+		std::string move;
 
+		// TODO: If split, keep hitting one hand until finished. Then move to second hand.
 		while (true) {
 
-			// Print Dealer's hand.
+			// Print Dealer's hand (but prevent showing hole card).
 			std::cout << "Dealer's Hand: ";
 			std::cout << printHand(dealer.hand, 1) << "? ";
 			std::cout << "(" << calcHandValue(dealer.hand, 1) << ")" << std::endl;
@@ -79,12 +81,24 @@ int main() {
 			std::cout << "(" << calcHandValue(player.hand, player.handSize) << ")" << std::endl;
 
 			// Print Player's split hand.
-			if (split == true) {
+			if (player.split == true) {
 			}
 
+			// Prompt player for move.
 			std::cout << player.name << "'s Move (hit, split, doubleDown, stand, surrender): ";
-			std::cin >> player.move;
+			std::cin >> move;
+			std::transform(move.begin(), move.end(), move.begin(), ::toupper);
+			std::cout << "Move: " << move << std::endl;
 
+			// Progress according to player move input.
+			if (move.compare("HIT") == 0) {
+				player.hand[++player.handSize] = deck.deal();
+			} else if (move.compare("SPLIT") == 0) {
+			} else if (move.compare("DOUBLEDOWN") == 0) {
+			} else if (move.compare("STAND") == 0) {
+			} else if (move.comapre("SURRENDER") == 0) {
+			} else {
+			}
 
 		}
 

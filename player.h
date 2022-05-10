@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
+#include <algorithm>
 
 std::string printHand(int *handList, int handListSize);
 int calcHandValue(int *handList, int handListSize);
@@ -45,7 +46,7 @@ class Player: public Dealer {
         std::string name;
         int money = 500;
         int splitHand[21];
-        int move;
-		int calcSplitHandValue();
+		int splitHandSize;
+		bool split;
         
 };
