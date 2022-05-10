@@ -28,10 +28,19 @@ void Deck::swap(int &a, int &b) {
     b = temp;
 }
 
-void Dealer::printHand() {
-	for (int i = 0; i < handSize; i++) {
+std::string Dealer::printHand(bool holeCard) {
 
-		std::string handString;
+	std::string handString;
+	int count;
+
+	if (holeCard) {
+		count = 1;
+	} else {
+		count = handSize;
+	}
+
+	for (int i = 0; i < count; i++) {
+
 		switch(hand[i]) {
 			case 1:
 				handString += "A(S)";
@@ -190,6 +199,7 @@ void Dealer::printHand() {
 				handString += "K(H)";
 				break;
 		}
+
 		handString += " ";
 
 	}

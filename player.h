@@ -34,9 +34,9 @@ class Dealer {
     public:
         int hand[21];
         int handSize;
-	int calcHandValue();
-	int handValue = 0;
-	void printHand();
+		int calcHandValue();
+		int handValue = 0;
+		std::string printHand(bool holeCard);
 };
 
 class Player: public Dealer {
@@ -45,6 +45,6 @@ class Player: public Dealer {
         int money = 500;
         int splitHand[21];
         int move;
-	int calcSplitHandValue();
+		int calcSplitHandValue();
         
 };
