@@ -2,6 +2,30 @@
 
 Deck::Deck() {
     srand(time(0));
+
+    int deckIndex = 0;
+
+    // Initialise the deck.
+    for (int cardValue = 1; cardValue <= 13; cardValue++) {
+        for (int cardSuit = 0; cardSuit < 4; cardSuit++) {
+            switch(cardSuit) {
+                case 0:
+                    cardDeck[deckIndex].suit = SPADE;
+                    break;
+                case 1:
+                    cardDeck[deckIndex].suit = CLUB;
+                    break;
+                case 2:
+                    cardDeck[deckIndex].suit = DIAMOND;
+                    break;
+                case 3:
+                    cardDeck[deckIndex].suit = HEART;
+                    break;
+            };
+
+            cardDeck[deckIndex++].value = cardValue;
+        }
+    }
 }
 
 void Deck::shuffle() {
@@ -16,221 +40,96 @@ void Deck::shuffle() {
     topCard = &cardDeck[0];
 }
 
-int Deck::deal() {
+card Deck::deal() {
     return *(topCard++);
 }
 
-void Deck::swap(int &a, int &b) {
-    int temp;
+void Deck::swap(card &a, card &b) {
+    card temp;
 
     temp = a;
     a = b;
     b = temp;
 }
 
-std::string printHand(int *handList, int handListSize) {
+// Return hand as string to be printed.
+std::string printHand(card *handList, int handListSize) {
 
 	std::string handString;
 
 	for (int i = 0; i < handListSize; i++) {
 
-		switch(handList[i]) {
-			case 1:
-				handString += "A(S)";
-				break;
-			case 2:
-				handString += "A(D)";
-				break;
-			case 3:
-				handString += "A(C)";
-				break;
-			case 4:
-				handString += "A(H)";
-				break;
-			case 5:
-				handString += "2(S)";
-				break;
-			case 6:
-				handString += "2(D)";
-				break;
-			case 7:
-				handString += "2(C)";
-				break;
-			case 8:
-				handString += "2(H)";
-				break;
-			case 9:
-				handString += "3(S)";
-				break;
-			case 10:
-				handString += "3(D)";
-				break;
-			case 11:
-				handString += "3(C)";
-				break;
-			case 12:
-				handString += "3(H)";
-				break;
-			case 13:
-				handString += "4(S)";
-				break;
-			case 14:
-				handString += "4(D)";
-				break;
-			case 15:
-				handString += "4(C)";
-				break;
-			case 16:
-				handString += "4(H)";
-				break;
-			case 17:
-				handString += "5(S)";
-				break;
-			case 18:
-				handString += "5(D)";
-				break;
-			case 19:
-				handString += "5(C)";
-				break;
-			case 20:
-				handString += "5(H)";
-				break;
-			case 21:
-				handString += "6(S)";
-				break;
-			case 22:
-				handString += "6(D)";
-				break;
-			case 23:
-				handString += "6(C)";
-				break;
-			case 24:
-				handString += "6(H)";
-				break;
-			case 25:
-				handString += "7(S)";
-				break;
-			case 26:
-				handString += "7(D)";
-				break;
-			case 27:
-				handString += "7(C)";
-				break;
-			case 28:
-				handString += "7(H)";
-				break;
-			case 29:
-				handString += "8(S)";
-				break;
-			case 30:
-				handString += "8(D)";
-				break;
-			case 31:
-				handString += "8(C)";
-				break;
-			case 32:
-				handString += "8(H)";
-				break;
-			case 33:
-				handString += "9(S)";
-				break;
-			case 34:
-				handString += "9(D)";
-				break;
-			case 35:
-				handString += "9(C)";
-				break;
-			case 36:
-				handString += "9(H)";
-				break;
-			case 37:
-				handString += "10(S)";
-				break;
-			case 38:
-				handString += "10(D)";
-				break;
-			case 39:
-				handString += "10(C)";
-				break;
-			case 40:
-				handString += "10(H)";
-				break;
-			case 41:
-				handString += "J(S)";
-				break;
-			case 42:
-				handString += "J(D)";
-				break;
-			case 43:
-				handString += "J(C)";
-				break;
-			case 44:
-				handString += "J(H)";
-				break;
-			case 45:
-				handString += "Q(S)";
-				break;
-			case 46:
-				handString += "Q(D)";
-				break;
-			case 47:
-				handString += "Q(C)";
-				break;
-			case 48:
-				handString += "Q(H)";
-				break;
-			case 49:
-				handString += "K(S)";
-				break;
-			case 50:
-				handString += "K(D)";
-				break;
-			case 51:
-				handString += "K(C)";
-				break;
-			case 52:
-				handString += "K(H)";
-				break;
-		}
+        switch(handList[i].value) {
+            case 1:
+                handString += "A";
+                break;
+            case 10:
+                handString += "10";
+                break;
+            case 11:
+                handString += "J";
+                break;
+            case 12:
+                handString += "Q";
+                break;
+            case 13:
+                handString += "K";
+                break;
+            default:
+                handString += std::to_string(handList[i].value);
+        };
 
-		handString += " ";
+        handString += "(";
+
+        switch(handList[i].suit) {
+            case 0:
+                handString += "S";
+                break;
+            case 1:
+                handString += "C";
+                break;
+            case 2:
+                handString += "D";
+                break;
+            case 3:
+                handString += "H";
+                break;
+        };
+
+		handString += ") ";
 
 	}
 
 	return handString;
 }
 
-int calcHandValue(int *handList, int handListSize) {
+// Calculate the value of hand.
+int calcHandValue(card *handList, int handListSize) {
 
 	int aceCount = 0;
 	int handValue = 0;
 
 	for (int i = 0; i < handListSize; i++) {
-
-		if (handList[i] <= 4) {
-			aceCount++;
-		} else if (handList[i] > 4 && handList[i] < 9) {
-			handValue += 2;
-		} else if (handList[i] > 8 && handList[i] < 13) {
-			handValue += 3;
-		} else if (handList[i] > 12 && handList[i] < 17) {
-			handValue += 4;
-		} else if (handList[i] > 16 && handList[i] < 21) {
-			handValue += 5;
-		} else if (handList[i] > 20 && handList[i] < 25) {
-			handValue += 6;
-		} else if (handList[i] > 24 && handList[i] < 29) {
-			handValue += 7;
-		} else if (handList[i] > 28 && handList[i] < 33) {
-			handValue += 8;
-		} else if (handList[i] > 32 && handList[i] < 37) {
-		   handValue += 9;
-		} else {
-			handValue += 10;
-		}	
-
+        switch(handList[i].value) {
+            case 1:
+                aceCount++;
+                break;
+            case 11:
+                handValue += 10;
+                break;
+            case 12:
+                handValue += 10;
+                break;
+            case 13:
+                handValue += 10;
+                break;
+            default:
+                handValue += handList[i].value;
+        };
 	}
 
+
+    // Calculate values for aces.
 	for (int j = aceCount; j > 0; j--) {
 
 		if ((j * 11) + handValue <= 21) {
