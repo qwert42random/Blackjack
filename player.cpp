@@ -82,16 +82,16 @@ std::string printHand(card *handList, int handListSize) {
         handString += "(";
 
         switch(handList[i].suit) {
-            case 0:
+            case SPADE:
                 handString += "S";
                 break;
-            case 1:
+            case CLUB:
                 handString += "C";
                 break;
-            case 2:
+            case DIAMOND:
                 handString += "D";
                 break;
-            case 3:
+            case HEART:
                 handString += "H";
                 break;
         };
