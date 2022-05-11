@@ -40,8 +40,8 @@ void Deck::shuffle() {
     topCard = &cardDeck[0];
 }
 
-card Deck::deal() {
-    return *(topCard++);
+void Deck::deal(handStruct &hand) {
+	hand.handList[hand.handSize++] = *(topCard++);
 }
 
 void Deck::swap(card &a, card &b) {
@@ -53,13 +53,21 @@ void Deck::swap(card &a, card &b) {
 }
 
 // Return hand as string to be printed.
-std::string printHand(card *handList, int handListSize) {
+std::string printHand(handStruct hand, bool hole) {
 
+	int reveal;
 	std::string handString;
 
-	for (int i = 0; i < handListSize; i++) {
+    // Only reveal one card if hiding hole card for dealer.
+	if (hole) {
+        reveal = 1;
+	} else {
+        reveal = hand.handSize;
+	}
 
-        switch(handList[i].value) {
+	for (int i = 0; i < reveal; i++) {
+
+        switch(hand.handList[i].value) {
             case 1:
                 handString += "A";
                 break;
@@ -76,12 +84,12 @@ std::string printHand(card *handList, int handListSize) {
                 handString += "K";
                 break;
             default:
-                handString += std::to_string(handList[i].value);
+                handString += std::to_string(hand.handList[i].value);
         };
 
         handString += "(";
 
-        switch(handList[i].suit) {
+        switch(hand.handList[i].suit) {
             case SPADE:
                 handString += "S";
                 break;
@@ -104,13 +112,21 @@ std::string printHand(card *handList, int handListSize) {
 }
 
 // Calculate the value of hand.
-int calcHandValue(card *handList, int handListSize) {
+int calcHandValue(handStruct hand, bool hole) {
 
 	int aceCount = 0;
 	int handValue = 0;
+    int reveal;
 
-	for (int i = 0; i < handListSize; i++) {
-        switch(handList[i].value) {
+    // Only reveal one card if hiding hole card for dealer.
+	if (hole) {
+        reveal = 1;
+	} else {
+        reveal = hand.handSize;
+	}
+
+	for (int i = 0; i < reveal; i++) {
+        switch(hand.handList[i].value) {
             case 1:
                 aceCount++;
                 break;
@@ -124,7 +140,7 @@ int calcHandValue(card *handList, int handListSize) {
                 handValue += 10;
                 break;
             default:
-                handValue += handList[i].value;
+                handValue += hand.handList[i].value;
         };
 	}
 

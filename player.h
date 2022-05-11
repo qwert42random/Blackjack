@@ -10,8 +10,13 @@ struct card {
     enum suitSymbols suit;
 };
 
-int calcHandValue(card *handList, int handListSize);
-std::string printHand(card *handList, int handListSize);
+struct handStruct {
+    card handList[20];
+    int handSize;
+};
+
+int calcHandValue(handStruct hand, bool hole);
+std::string printHand(handStruct hand, bool hole);
 
 class Deck {
     public:
@@ -19,7 +24,7 @@ class Deck {
 
         card cardDeck[52];
 
-        card deal();
+        void deal(handStruct &hand);
         void shuffle();
 
     private:
@@ -29,16 +34,14 @@ class Deck {
 
 class Dealer {
     public:
-        card hand[21];
-        int handSize;
+        handStruct mainHand;
 };
 
 class Player: public Dealer {
     public:
         std::string name;
         int money = 500;
-        card splitHand[21];
-		int splitHandSize;
 		bool split;
+        handStruct splitHand;
         
 };

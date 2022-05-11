@@ -47,16 +47,13 @@ int main() {
 		deck.shuffle();
 
 		// Reset hand sizes member.
-		dealer.handSize = 0;
-		player.handSize = 0;
+		dealer.mainHand.handSize = 0;
+		player.mainHand.handSize = 0;
 
 		// Deal the initial hand.
 		for (int i = 0; i < 2; i++) {
-			dealer.hand[i] = deck.deal();
-			dealer.handSize++;
-
-			player.hand[i] = deck.deal();
-			player.handSize++;
+			deck.deal(dealer.mainHand);
+			deck.deal(player.mainHand);
 		}
 
 		player.split = false;
@@ -68,19 +65,19 @@ int main() {
 
 			// Print Dealer's hand (but prevent showing hole card).
 			std::cout << "Dealer's Hand: ";
-			std::cout << printHand(dealer.hand, 1) << "? ";
-			std::cout << "(" << calcHandValue(dealer.hand, 1) << ")" << std::endl;
+			std::cout << printHand(dealer.mainHand, true) << "? ";
+			std::cout << "(" << calcHandValue(dealer.mainHand, true) << ")" << std::endl;
 
     		// Print Player's hand.
 			std::cout << player.name << "'s Hand: ";
-			std::cout << printHand(player.hand, player.handSize);
-			std::cout << "(" << calcHandValue(player.hand, player.handSize) << ")" << std::endl;
+			std::cout << printHand(player.mainHand, false);
+			std::cout << "(" << calcHandValue(player.mainHand, false) << ")" << std::endl;
 
-			// Print Player's split hand.
+			// Print Player's split hand if hand has been split.
 			if (player.split == true) {
                 std::cout << "Split Hand: ";
-                std::cout << printHand(player.splitHand, player.splitHandSize);
-                std::cout << "(" << calcHandValue(player.splitHand, player.splitHandSize) << ")" << std::endl;
+                std::cout << printHand(player.mainHand, false);
+                std::cout << "(" << calcHandValue(player.mainHand, false) << ")" << std::endl;
 			}
 
 			// Prompt player for move.
@@ -92,16 +89,16 @@ int main() {
 			// Progress according to player move input.
 			if (move.compare("HIT") == 0) {
 
-				player.hand[player.handSize++] = deck.deal();
+                deck.deal(player.mainHand);
 
 			} else if (move.compare("SPLIT") == 0) {
 
                 if (player.split == false) {
 
-                    player.splitHandSize = 0;
+                    player.splitHand.handSize = 0;
 
-                    player.splitHand[player.splitHandSize++] = deck.deal();
-                    player.splitHand[player.splitHandSize++] = deck.deal();
+                    deck.deal(player.splitHand);
+                    deck.deal(player.splitHand);
 
                     player.split = true;
 
@@ -116,7 +113,7 @@ int main() {
                 // Check if player has enough money.
                 if (playerBet * 2 < player.money) {
                     playerBet * 2;
-                    player.hand[player.handSize++] = deck.deal();
+                    deck.deal(player.mainHand);
                     playerMove = false;
                 } else {
                     std::cout << "Insufficient funds" << std::endl;
@@ -134,7 +131,7 @@ int main() {
                 std::cout << "Unrecognised Move" << std::endl;
 			}
 
-            if (calcHandValue(player.hand, player.handSize) >= 21) {
+            if (calcHandValue(player.mainHand, false) >= 21) {
                 playerMove = false;
                 std::cout << "out" << std::endl;
             }
