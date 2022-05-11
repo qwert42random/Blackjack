@@ -134,7 +134,14 @@ int main() {
                 std::cout << "Unrecognised Move" << std::endl;
 			}
 
+            if (calcHandValue(player.hand, player.handSize) >= 21) {
+                playerMove = false;
+                std::cout << "out" << std::endl;
+            }
+
 		}
+
+        std::cout << "break" << std::endl;
 
 		break;
 	}
