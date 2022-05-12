@@ -59,6 +59,14 @@ int main() {
 		player.split = false;
 		std::string move;
         bool playerMove = true;
+        bool allowSplit;
+
+        // Check if splitting is allowed.
+        if (player.mainHand.handList[0].value == player.mainHand.handList[1].value) {
+            allowSplit = true;
+        } else {
+            allowSplit = false;
+        }
 
 		// TODO: If split, keep hitting one hand until finished. Then move to second hand.
 		while (playerMove == true) {
@@ -68,20 +76,35 @@ int main() {
 			std::cout << printHand(dealer.mainHand, true) << "? ";
 			std::cout << "(" << calcHandValue(dealer.mainHand, true) << ")" << std::endl;
 
-    		// Print Player's hand.
-			std::cout << player.name << "'s Hand: ";
-			std::cout << printHand(player.mainHand, false);
-			std::cout << "(" << calcHandValue(player.mainHand, false) << ")" << std::endl;
 
-			// Print Player's split hand if hand has been split.
+			// Print Player's hand.
 			if (player.split == true) {
+                   
+                // Print Player's hand.
+                std::cout << "*" << player.name << "'s Hand: ";
+                std::cout << printHand(player.mainHand, false);
+                std::cout << "(" << calcHandValue(player.mainHand, false) << ")" << std::endl;
+
+                // Print Player's split hand.
                 std::cout << "Split Hand: ";
                 std::cout << printHand(player.mainHand, false);
                 std::cout << "(" << calcHandValue(player.mainHand, false) << ")" << std::endl;
-			}
+
+			} else {
+            
+                // Just print Player's hand.
+                std::cout << "*" << player.name << "'s Hand: ";
+                std::cout << printHand(player.mainHand, false);
+                std::cout << "(" << calcHandValue(player.mainHand, false) << ")" << std::endl;
+
+            }
 
 			// Prompt player for move.
-    		std::cout << player.name << "'s Move (hit, split, doubleDown, stand, surrender): ";
+            if (allowSplit) {
+    		    std::cout << player.name << "'s Move (hit, split, doubleDown, stand, surrender): ";
+            } else {
+    		    std::cout << player.name << "'s Move (hit, doubleDown, stand, surrender): ";
+            }
 			std::cin >> move;
 			std::transform(move.begin(), move.end(), move.begin(), ::toupper);
 			std::cout << "Move: " << move << std::endl;
@@ -91,22 +114,13 @@ int main() {
 
                 deck.deal(player.mainHand);
 
-			} else if (move.compare("SPLIT") == 0) {
+			} else if (move.compare("SPLIT") == 0 && allowSplit) {
+                player.splitHand.handSize = 0;
+                deck.deal(player.splitHand);
+                deck.deal(player.splitHand);
 
-                if (player.split == false) {
-
-                    player.splitHand.handSize = 0;
-
-                    deck.deal(player.splitHand);
-                    deck.deal(player.splitHand);
-
-                    player.split = true;
-
-                } else {
-
-                    std::cout << "Cannot Split" << std::endl;
-
-                }
+                player.split = true;
+                allowSplit = false;
 
 			} else if (move.compare("DOUBLEDOWN") == 0) {
 
@@ -116,7 +130,7 @@ int main() {
                     deck.deal(player.mainHand);
                     playerMove = false;
                 } else {
-                    std::cout << "Insufficient funds" << std::endl;
+                    std::cout << "Insufficient funds to Double Down" << std::endl;
                 }
 
 			} else if (move.compare("STAND") == 0) {
@@ -137,6 +151,7 @@ int main() {
             }
 
 		}
+
 
         std::cout << "break" << std::endl;
 
