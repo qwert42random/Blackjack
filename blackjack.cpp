@@ -69,6 +69,7 @@ int main() {
         }
 
 		// TODO: If split, keep hitting one hand until finished. Then move to second hand.
+        // TODO: Remove playerMove and just break out of loop?
 		while (playerMove == true) {
 
 			// Print Dealer's hand (but prevent showing hole card).
@@ -97,6 +98,11 @@ int main() {
                 std::cout << printHand(player.mainHand, false);
                 std::cout << "(" << calcHandValue(player.mainHand, false) << ")" << std::endl;
 
+            }
+
+            if (calcHandValue(player.mainHand, false) >= 21) {
+                playerMove = false;
+                break;
             }
 
 			// Prompt player for move.
@@ -137,18 +143,13 @@ int main() {
 
                 playerMove = false;
 
-			} else if (move.compare("SURRENDER") == 0) {
+            } else if (move.compare("SURRENDER") == 0) {
 
                 playerMove = false;
 
 			} else {
                 std::cout << "Unrecognised Move" << std::endl;
 			}
-
-            if (calcHandValue(player.mainHand, false) >= 21) {
-                playerMove = false;
-                std::cout << "out" << std::endl;
-            }
 
 		}
 
