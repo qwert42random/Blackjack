@@ -68,8 +68,6 @@ int main() {
             allowSplit = false;
         }
 
-        std::cout << allowSplit << std::endl;
-
 		// TODO: If split, keep hitting one hand until finished. Then move to second hand.
         // TODO: Remove playerMove and just break out of loop?
 		while (playerMove == true) {
@@ -123,22 +121,30 @@ int main() {
                 deck.deal(player.mainHand);
 
 			} else if (move.compare("SPLIT") == 0 && allowSplit) {
-                player.splitHand.handSize = 1;
 
-                player.splitHand.handList[0] = player.mainHand.handList[1];
+                if (playerBet * 2 < player.money) {
 
-                player.mainHand.handSize = 1;
+                    player.splitHand.handSize = 1;
+                    player.splitHand.handList[0] = player.mainHand.handList[1];
+                    player.mainHand.handSize = 1;
 
-                deck.deal(player.splitHand);
-                deck.deal(player.mainHand);
+                    deck.deal(player.splitHand);
+                    deck.deal(player.mainHand);
 
-                player.split = true;
+                    player.split = true;
+
+                } else {
+
+                    std::cout << "Insufficient funds to split" << std::endl;
+
+                }
+
                 allowSplit = false;
 
 			} else if (move.compare("DOUBLEDOWN") == 0) {
 
                 // Check if player has enough money.
-                if (playerBet * 2 < player.money) {
+                if (playerBet * 2 > player.money) {
                     playerBet * 2;
                     deck.deal(player.mainHand);
                     playerMove = false;
