@@ -18,8 +18,8 @@ int main() {
         bool validBet = false;
 		int playerBet;
 
-		// TODO: Maybe shove this into while loop as well?
-        do {
+        // Prompt player for bet amount.
+        while (validBet == false) {
             std::cout << "Enter bet amount (max: " << player.money << "): ";
             std::cin >> playerBet;
 
@@ -40,7 +40,7 @@ int main() {
                 std::cout << player.name  << " entered: " << playerBet << std::endl;
             }
 
-        } while (validBet == false);
+        }
 
 		player.money -= playerBet;
 
