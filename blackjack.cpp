@@ -68,6 +68,8 @@ int main() {
             allowSplit = false;
         }
 
+        std::cout << allowSplit << std::endl;
+
 		// TODO: If split, keep hitting one hand until finished. Then move to second hand.
         // TODO: Remove playerMove and just break out of loop?
 		while (playerMove == true) {
@@ -121,9 +123,14 @@ int main() {
                 deck.deal(player.mainHand);
 
 			} else if (move.compare("SPLIT") == 0 && allowSplit) {
-                player.splitHand.handSize = 0;
+                player.splitHand.handSize = 1;
+
+                player.splitHand.handList[0] = player.mainHand.handList[1];
+
+                player.mainHand.handSize = 1;
+
                 deck.deal(player.splitHand);
-                deck.deal(player.splitHand);
+                deck.deal(player.mainHand);
 
                 player.split = true;
                 allowSplit = false;
