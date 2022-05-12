@@ -88,8 +88,8 @@ int main() {
 
                 // Print Player's split hand.
                 std::cout << "Split Hand: ";
-                std::cout << printHand(player.mainHand, false);
-                std::cout << "(" << calcHandValue(player.mainHand, false) << ")" << std::endl;
+                std::cout << printHand(player.splitHand, false);
+                std::cout << "(" << calcHandValue(player.splitHand, false) << ")" << std::endl;
 
 			} else {
             
