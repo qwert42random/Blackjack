@@ -15,9 +15,6 @@ struct handStruct {
     int handSize;
 };
 
-int calcHandValue(handStruct hand, bool hole);
-std::string printHand(handStruct hand, bool hole);
-
 class Deck {
     public:
         Deck();
@@ -35,6 +32,12 @@ class Deck {
 class Dealer {
     public:
         handStruct mainHand;
+        void printHand(bool hideHole);
+
+    protected:
+        int calcHandValue(handStruct hand, bool hole);
+        std::string obtainHandString(handStruct hand, bool hole);
+
 };
 
 class Player: public Dealer {
@@ -43,5 +46,6 @@ class Player: public Dealer {
         int money = 500;
 		bool split;
         handStruct splitHand;
+        void printHand();
         
 };

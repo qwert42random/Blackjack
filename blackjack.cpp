@@ -42,8 +42,6 @@ int main() {
 
         }
 
-		player.money -= playerBet;
-
 		deck.shuffle();
 
 		// Reset hand sizes member.
@@ -73,37 +71,15 @@ int main() {
 		while (playerMove == true) {
 
 			// Print Dealer's hand (but prevent showing hole card).
-			std::cout << "Dealer's Hand: ";
-			std::cout << printHand(dealer.mainHand, true) << "? ";
-			std::cout << "(" << calcHandValue(dealer.mainHand, true) << ")" << std::endl;
+            dealer.printHand(true);
+            player.printHand();
 
 
-			// Print Player's hand.
-			if (player.split == true) {
-                   
-                // Print Player's hand.
-                std::cout << "*" << player.name << "'s Hand: ";
-                std::cout << printHand(player.mainHand, false);
-                std::cout << "(" << calcHandValue(player.mainHand, false) << ")" << std::endl;
-
-                // Print Player's split hand.
-                std::cout << "Split Hand: ";
-                std::cout << printHand(player.splitHand, false);
-                std::cout << "(" << calcHandValue(player.splitHand, false) << ")" << std::endl;
-
-			} else {
-            
-                // Just print Player's hand.
-                std::cout << "*" << player.name << "'s Hand: ";
-                std::cout << printHand(player.mainHand, false);
-                std::cout << "(" << calcHandValue(player.mainHand, false) << ")" << std::endl;
-
-            }
-
-            if (calcHandValue(player.mainHand, false) >= 21) {
-                playerMove = false;
-                break;
-            }
+            // Check if player hand value is >= 21.
+            //if (calcHandValue(player.mainHand, false) >= 21) {
+            //    playerMove = false;
+            //    break;
+            //}
 
 			// Prompt player for move.
             if (allowSplit) {
@@ -122,7 +98,7 @@ int main() {
 
 			} else if (move.compare("SPLIT") == 0 && allowSplit) {
 
-                if (playerBet * 2 < player.money) {
+                if (playerBet * 2 <= player.money) {
 
                     player.splitHand.handSize = 1;
                     player.splitHand.handList[0] = player.mainHand.handList[1];
