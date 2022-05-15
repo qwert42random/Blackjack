@@ -57,7 +57,10 @@ int main() {
 		player.split = false;
 		std::string move;
         bool playerMove = true;
+        bool finishMove = false;
         bool allowSplit;
+        bool bust = false;
+        player.dealToSplit = false;
 
         // Check if splitting is allowed.
         if (player.mainHand.handList[0].value == player.mainHand.handList[1].value) {
@@ -66,35 +69,37 @@ int main() {
             allowSplit = false;
         }
 
-		// TODO: If split, keep hitting one hand until finished. Then move to second hand.
-        // TODO: Remove playerMove and just break out of loop?
-		while (playerMove == true) {
+        handStruct *handToDeal = &player.mainHand;
 
-			// Print Dealer's hand (but prevent showing hole card).
+        while (true) {
+            
+            // Print hands for dealer and player.
             dealer.printHand(true);
             player.printHand();
 
-
-            // Check if player hand value is >= 21.
-            //if (calcHandValue(player.mainHand, false) >= 21) {
-            //    playerMove = false;
-            //    break;
-            //}
-
-			// Prompt player for move.
+            // Print move prompt for player.
             if (allowSplit) {
     		    std::cout << player.name << "'s Move (hit, split, doubleDown, stand, surrender): ";
-            } else {
+            } else if (bust == false) {
     		    std::cout << player.name << "'s Move (hit, doubleDown, stand, surrender): ";
+            } else {
+                std::cout << player.name << "'s Move (stand): " << std::endl;
             }
-			std::cin >> move;
-			std::transform(move.begin(), move.end(), move.begin(), ::toupper);
-			std::cout << "Move: " << move << std::endl;
+
+            std::cin >> move;
+            std::transform(move.begin(), move.end(), move.begin(), ::toupper);
+            std::cout << "~~~~~~~~~~~~~~~~~~~~~~~~~" << std::endl;
+            std::cout << "Move: " << move << std::endl;
 
 			// Progress according to player move input.
 			if (move.compare("HIT") == 0) {
 
-                deck.deal(player.mainHand);
+                deck.deal(*handToDeal);
+                player.updateHandValue(*handToDeal, false);
+
+                if (handToDeal->value > 21) {
+                    finishMove = true;
+                }
 
 			} else if (move.compare("SPLIT") == 0 && allowSplit) {
 
@@ -109,20 +114,21 @@ int main() {
 
                     player.split = true;
 
+                    player.updateHandValue(*handToDeal, false);
+
                 } else {
 
                     std::cout << "Insufficient funds to split" << std::endl;
 
                 }
 
-                allowSplit = false;
 
 			} else if (move.compare("DOUBLEDOWN") == 0) {
 
                 // Check if player has enough money.
-                if (playerBet * 2 > player.money) {
+                if (playerBet * 2 <= player.money) {
                     playerBet * 2;
-                    deck.deal(player.mainHand);
+                    deck.deal(*handToDeal);
                     playerMove = false;
                 } else {
                     std::cout << "Insufficient funds to Double Down" << std::endl;
@@ -130,20 +136,36 @@ int main() {
 
 			} else if (move.compare("STAND") == 0) {
 
-                playerMove = false;
+                finishMove = true;
 
             } else if (move.compare("SURRENDER") == 0) {
 
-                playerMove = false;
+                finishMove = true;
 
 			} else {
                 std::cout << "Unrecognised Move" << std::endl;
 			}
 
-		}
+            // Switch hand to split hand if move finished.
+            if (finishMove == true) {
+                if (player.split == true && handToDeal == &player.mainHand) {
+                    handToDeal = &player.splitHand;
+                    player.dealToSplit = true;
+                    finishMove = false;
+                } else {
+                    break;
+                }
+            }
+
+            allowSplit = false;
+
+        }
 
 
-        std::cout << "break" << std::endl;
+        std::cout << "----------break----------" << std::endl;
+        // Print hands for dealer and player.
+        dealer.printHand(true);
+        player.printHand();
 
 		break;
 	}

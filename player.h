@@ -13,6 +13,7 @@ struct card {
 struct handStruct {
     card handList[20];
     int handSize;
+    int value;
 };
 
 class Deck {
@@ -33,9 +34,9 @@ class Dealer {
     public:
         handStruct mainHand;
         void printHand(bool hideHole);
+        void updateHandValue(handStruct &hand, bool hole);
 
     protected:
-        int calcHandValue(handStruct hand, bool hole);
         std::string obtainHandString(handStruct hand, bool hole);
 
 };
@@ -47,5 +48,7 @@ class Player: public Dealer {
 		bool split;
         handStruct splitHand;
         void printHand();
+
+        bool dealToSplit = false;
         
 };

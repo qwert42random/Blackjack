@@ -53,24 +53,31 @@ void Deck::swap(card &a, card &b) {
 }
 
 void Dealer::printHand(bool hideHole) {
+
+    // Print Dealer's hand.
+    updateHandValue(mainHand, true);
     std::cout << "Dealer's Hand: ";
     std::cout << obtainHandString(mainHand, hideHole) << "? ";
-    std::cout << "(" << calcHandValue(mainHand, hideHole) << ")" << std::endl;
+    std::cout << "(" << mainHand.value << ")" << std::endl;
 }
 
 void Player::printHand() {
 
     // Print Player's Hand.
-    std::cout << "*" << name << "'s Hand: ";
+    updateHandValue(mainHand, false);
+    if (dealToSplit == false) std::cout << "*";
+    std::cout << name << "'s Hand: ";
     std::cout << obtainHandString(mainHand, false);
-    std::cout << "(" << calcHandValue(mainHand, false) << ")" << std::endl;
+    std::cout << "(" << mainHand.value << ")" << std::endl;
 
     if (split == true) {
 
         // Print Player's split hand.
+        updateHandValue(splitHand, false);
+        if (dealToSplit == true) std::cout << "*";
         std::cout << "Split Hand: ";
         std::cout << obtainHandString(splitHand, false);
-        std::cout << "(" << calcHandValue(splitHand, false) << ")" << std::endl;
+        std::cout << "(" << splitHand.value << ")" << std::endl;
 
     }
 }
@@ -135,7 +142,7 @@ std::string Dealer::obtainHandString(handStruct hand, bool hole) {
 }
 
 // Calculate the value of hand.
-int Dealer::calcHandValue(handStruct hand, bool hole) {
+void Dealer::updateHandValue(handStruct &hand, bool hole) {
 
 	int aceCount = 0;
 	int handValue = 0;
@@ -180,6 +187,6 @@ int Dealer::calcHandValue(handStruct hand, bool hole) {
 
 	}
 
-	return handValue;
+	hand.value = handValue;
 }
 
