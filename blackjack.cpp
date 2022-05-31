@@ -44,48 +44,44 @@ int main() {
 
 		deck.shuffle();
 
-		// Reset hand sizes member.
+        // Reset hands.
 		dealer.mainHand.handSize = 0;
-		player.mainHand.handSize = 0;
+		player.handList[0].handSize = 0;
+        player.handListSize = 1;
+
+        player.handToDeal = &player.handList[0];
 
 		// Deal the initial hand.
 		for (int i = 0; i < 2; i++) {
 			deck.deal(dealer.mainHand);
-			deck.deal(player.mainHand);
+			deck.deal(*player.handToDeal);
 		}
 
-		player.split = false;
 		std::string move;
-        bool playerMove = true;
         bool finishMove = false;
         bool allowSplit;
-        bool bust = false;
-        player.dealToSplit = false;
-
-        // Check if splitting is allowed.
-        if (player.mainHand.handList[0].value == player.mainHand.handList[1].value) {
-            allowSplit = true;
-        } else {
-            allowSplit = false;
-        }
-
-        handStruct *handToDeal = &player.mainHand;
+        bool allowDoubleDown = true;
 
         while (true) {
             
-            // Print hands for dealer and player.
-            dealer.printHand(true);
-            player.printHand();
-
-            // Print move prompt for player.
-            if (allowSplit) {
-    		    std::cout << player.name << "'s Move (hit, split, doubleDown, stand, surrender): ";
-            } else if (bust == false) {
-    		    std::cout << player.name << "'s Move (hit, doubleDown, stand, surrender): ";
+            // Check if splitting is allowed.
+            if (player.handToDeal->handList[0].value == player.handToDeal->handList[1].value && player.handToDeal->handSize == 2) {
+                 allowSplit = true;
             } else {
-                std::cout << player.name << "'s Move (stand): " << std::endl;
+                allowSplit = false;
             }
 
+            // Print hands for dealer and player.
+            player.printHand();
+            dealer.printHand(true);
+
+            // Print move prompt for player.
+            std::cout << player.name << "'s Move (hit, ";
+            if (allowSplit) std::cout << "split, ";
+            if (allowDoubleDown) std::cout << "doubleDown, ";
+            std::cout << "stand, surrender): ";
+
+            // Take in player move.
             std::cin >> move;
             std::transform(move.begin(), move.end(), move.begin(), ::toupper);
             std::cout << "~~~~~~~~~~~~~~~~~~~~~~~~~" << std::endl;
@@ -94,70 +90,29 @@ int main() {
 			// Progress according to player move input.
 			if (move.compare("HIT") == 0) {
 
-                deck.deal(*handToDeal);
-                player.updateHandValue(*handToDeal, false);
+                deck.deal(*player.handToDeal);
 
-                if (handToDeal->value > 21) {
+                // Check if hand is bust or 21.
+                if (player.handToDeal->value >= 21) {
                     finishMove = true;
                 }
 
 			} else if (move.compare("SPLIT") == 0 && allowSplit) {
-
-                if (playerBet * 2 <= player.money) {
-
-                    player.splitHand.handSize = 1;
-                    player.splitHand.handList[0] = player.mainHand.handList[1];
-                    player.mainHand.handSize = 1;
-
-                    deck.deal(player.splitHand);
-                    deck.deal(player.mainHand);
-
-                    player.split = true;
-
-                    player.updateHandValue(*handToDeal, false);
-
-                } else {
-
-                    std::cout << "Insufficient funds to split" << std::endl;
-
-                }
-
-
 			} else if (move.compare("DOUBLEDOWN") == 0) {
-
-                // Check if player has enough money.
-                if (playerBet * 2 <= player.money) {
-                    playerBet * 2;
-                    deck.deal(*handToDeal);
-                    playerMove = false;
-                } else {
-                    std::cout << "Insufficient funds to Double Down" << std::endl;
-                }
-
 			} else if (move.compare("STAND") == 0) {
-
-                finishMove = true;
-
             } else if (move.compare("SURRENDER") == 0) {
-
-                finishMove = true;
-
 			} else {
                 std::cout << "Unrecognised Move" << std::endl;
 			}
 
             // Switch hand to split hand if move finished.
             if (finishMove == true) {
-                if (player.split == true && handToDeal == &player.mainHand) {
-                    handToDeal = &player.splitHand;
-                    player.dealToSplit = true;
-                    finishMove = false;
-                } else {
-                    break;
-                }
+                allowDoubleDown = true;
             }
 
+            // Prevent splitting or doubling down after first move.
             allowSplit = false;
+            allowDoubleDown = false;
 
         }
 

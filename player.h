@@ -14,7 +14,12 @@ struct handStruct {
     card handList[20];
     int handSize;
     int value;
+
+    bool split = false;
+    int bet;
 };
+
+std::string obtainHandString(handStruct hand, bool hole);
 
 class Deck {
     public:
@@ -28,27 +33,23 @@ class Deck {
     private:
         card *topCard;
         void swap(card &a, card &b);
+        int calcHandValue(handStruct &hand);
 };
 
 class Dealer {
     public:
         handStruct mainHand;
         void printHand(bool hideHole);
-        void updateHandValue(handStruct &hand, bool hole);
-
-    protected:
-        std::string obtainHandString(handStruct hand, bool hole);
 
 };
 
-class Player: public Dealer {
+class Player {
     public:
         std::string name;
         int money = 500;
-		bool split;
-        handStruct splitHand;
+        handStruct handList[3];
+        handStruct *handToDeal = &handList[0];
+        int handListSize = 1;
         void printHand();
-
-        bool dealToSplit = false;
         
 };

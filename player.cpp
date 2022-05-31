@@ -42,6 +42,7 @@ void Deck::shuffle() {
 
 void Deck::deal(handStruct &hand) {
 	hand.handList[hand.handSize++] = *(topCard++);
+    hand.value = calcHandValue(hand);
 }
 
 void Deck::swap(card &a, card &b) {
@@ -52,38 +53,51 @@ void Deck::swap(card &a, card &b) {
     b = temp;
 }
 
+// Print Dealer's hand.
 void Dealer::printHand(bool hideHole) {
 
-    // Print Dealer's hand.
-    updateHandValue(mainHand, true);
     std::cout << "Dealer's Hand: ";
     std::cout << obtainHandString(mainHand, hideHole) << "? ";
-    std::cout << "(" << mainHand.value << ")" << std::endl;
+
+    std::cout << "(";
+
+    if (hideHole) {
+
+        switch(mainHand.handList[0].value) {
+            case 11:
+                std::cout << "10";
+                break;
+            case 12:
+                std::cout << "10";
+                break;
+            case 13:
+                std::cout << "10";
+                break;
+            default:
+                std::cout << mainHand.handList[0].value;
+        };
+
+    } else {
+        std::cout << mainHand.value;
+    }
+
+    std::cout << ")" << std::endl;
 }
 
 void Player::printHand() {
 
     // Print Player's Hand.
-    updateHandValue(mainHand, false);
-    if (dealToSplit == false) std::cout << "*";
     std::cout << name << "'s Hand: ";
-    std::cout << obtainHandString(mainHand, false);
-    std::cout << "(" << mainHand.value << ")" << std::endl;
 
-    if (split == true) {
-
-        // Print Player's split hand.
-        updateHandValue(splitHand, false);
-        if (dealToSplit == true) std::cout << "*";
-        std::cout << "Split Hand: ";
-        std::cout << obtainHandString(splitHand, false);
-        std::cout << "(" << splitHand.value << ")" << std::endl;
-
+    for (int i = 0; i < handListSize; i++) {
+        std::cout << obtainHandString(handList[i], false);
+        std::cout << "(" << handList[i].value << ")" << std::endl;
     }
+
 }
 
 // Return hand as string to be printed.
-std::string Dealer::obtainHandString(handStruct hand, bool hole) {
+std::string obtainHandString(handStruct hand, bool hole) {
 
 	int reveal;
 	std::string handString;
@@ -142,20 +156,13 @@ std::string Dealer::obtainHandString(handStruct hand, bool hole) {
 }
 
 // Calculate the value of hand.
-void Dealer::updateHandValue(handStruct &hand, bool hole) {
+int Deck::calcHandValue(handStruct &hand) {
 
 	int aceCount = 0;
 	int handValue = 0;
     int reveal;
 
-    // Only reveal one card if hiding hole card for dealer.
-	if (hole) {
-        reveal = 1;
-	} else {
-        reveal = hand.handSize;
-	}
-
-	for (int i = 0; i < reveal; i++) {
+	for (int i = 0; i < hand.handSize; i++) {
         switch(hand.handList[i].value) {
             case 1:
                 aceCount++;
@@ -187,6 +194,6 @@ void Dealer::updateHandValue(handStruct &hand, bool hole) {
 
 	}
 
-	hand.value = handValue;
+    return handValue;
 }
 
