@@ -32,7 +32,7 @@ class Deck {
 
         card cardDeck[52];
 
-        void deal(handStruct &hand);
+        void deal(handStruct *hand);
         void shuffle();
 
     private:
@@ -52,8 +52,8 @@ class Player {
     public:
         std::string name;
         int money = 500;
-        handStruct handList[3];
-        handStruct *handToDeal = &handList[0];
+        playerHandStruct handList[4];
+        playerHandStruct *handToDeal = &handList[0];
         int handListSize = 1;
         void printHand();
         

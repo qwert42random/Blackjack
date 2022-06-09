@@ -40,9 +40,13 @@ void Deck::shuffle() {
     topCard = &cardDeck[0];
 }
 
-void Deck::deal(handStruct &hand) {
-	hand.handList[hand.handSize++] = *(topCard++);
-    hand.value = calcHandValue(hand);
+void Deck::deal(handStruct *hand) {
+
+    // TODO: Delete this line when done.
+    std::cout << topCard->suit << " " << topCard->value << std::endl;
+
+	hand->handList[hand->handSize++] = *(topCard++);
+    hand->value = calcHandValue(*hand);
 }
 
 void Deck::swap(card &a, card &b) {
@@ -160,7 +164,6 @@ int Deck::calcHandValue(handStruct &hand) {
 
 	int aceCount = 0;
 	int handValue = 0;
-    int reveal;
 
 	for (int i = 0; i < hand.handSize; i++) {
         switch(hand.handList[i].value) {

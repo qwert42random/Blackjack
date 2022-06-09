@@ -53,8 +53,8 @@ int main() {
 
 		// Deal the initial hand.
 		for (int i = 0; i < 2; i++) {
-			deck.deal(dealer.mainHand);
-			deck.deal(*player.handToDeal);
+			deck.deal(&dealer.mainHand);
+			deck.deal(player.handToDeal);
 		}
 
 		std::string move;
@@ -96,7 +96,7 @@ int main() {
 			// Progress according to player move input.
 			if (move.compare("HIT") == 0) {
 
-                deck.deal(*player.handToDeal);
+                deck.deal(player.handToDeal);
 
                 // Check if hand is bust or 21.
                 if (player.handToDeal->value >= 21) {
