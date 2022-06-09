@@ -14,9 +14,6 @@ struct handStruct {
     card handList[20];
     int handSize;
     int value;
-
-    bool split = false;
-    int bet;
 };
 
 struct playerHandStruct: handStruct {

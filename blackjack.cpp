@@ -60,18 +60,19 @@ int main() {
 		std::string move;
         bool finishMove = false;
         bool allowSplit, allowDoubleDown;
+        int totalBetAmount = playerBet;
 
         while (true) {
             
             // Check if splitting is allowed.
-            if (player.handToDeal->handList[0].value == player.handToDeal->handList[1].value && player.handToDeal->handSize == 2) {
+            if (player.handToDeal->handList[0].value == player.handToDeal->handList[1].value && player.handToDeal->handSize == 2 && totalBetAmount + playerBet < player.money) {
                  allowSplit = true;
             } else {
                 allowSplit = false;
             }
 
             // Check if doubling down is allowed.
-            if (player.handToDeal->handSize == 2) {
+            if (player.handToDeal->handSize == 2 && totalBetAmount + playerBet < player.money) {
                 allowDoubleDown = true;
             } else {
                 allowDoubleDown = false;
@@ -105,20 +106,27 @@ int main() {
 
 			} else if (move.compare("SPLIT") == 0 && allowSplit) {
 			} else if (move.compare("DOUBLEDOWN") == 0 && allowDoubleDown) {
+
+                deck.deal(player.handToDeal);
+                totalBetAmount += playerBet;
+                player.handToDeal->doubleDown = true;
+                finishMove = true;
+
 			} else if (move.compare("STAND") == 0) {
+
+                finishMove = true;
+
             } else if (move.compare("SURRENDER") == 0) {
+
+                finishMove = true;
+
 			} else {
                 std::cout << "Unrecognised Move" << std::endl;
 			}
 
             // Switch hand to split hand if move finished.
             if (finishMove == true) {
-                allowDoubleDown = true;
             }
-
-            // Prevent splitting or doubling down after first move.
-            allowSplit = false;
-            allowDoubleDown = false;
 
         }
 
