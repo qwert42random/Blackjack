@@ -59,8 +59,7 @@ int main() {
 
 		std::string move;
         bool finishMove = false;
-        bool allowSplit;
-        bool allowDoubleDown = true;
+        bool allowSplit, allowDoubleDown;
 
         while (true) {
             
@@ -69,6 +68,13 @@ int main() {
                  allowSplit = true;
             } else {
                 allowSplit = false;
+            }
+
+            // Check if doubling down is allowed.
+            if (player.handToDeal->handSize == 2) {
+                allowDoubleDown = true;
+            } else {
+                allowDoubleDown = false;
             }
 
             // Print hands for dealer and player.
@@ -98,7 +104,7 @@ int main() {
                 }
 
 			} else if (move.compare("SPLIT") == 0 && allowSplit) {
-			} else if (move.compare("DOUBLEDOWN") == 0) {
+			} else if (move.compare("DOUBLEDOWN") == 0 && allowDoubleDown) {
 			} else if (move.compare("STAND") == 0) {
             } else if (move.compare("SURRENDER") == 0) {
 			} else {
