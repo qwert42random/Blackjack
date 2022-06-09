@@ -19,6 +19,11 @@ struct handStruct {
     int bet;
 };
 
+struct playerHandStruct: handStruct {
+    bool doubleDown = false;
+    bool surrender = false;
+};
+
 std::string obtainHandString(handStruct hand, bool hole);
 
 class Deck {
