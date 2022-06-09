@@ -99,24 +99,23 @@ int main() {
 
                 deck.deal(player.handToDeal);
 
-                // Check if hand is bust or 21.
-                if (player.handToDeal->value >= 21) {
-                    finishMove = true;
-                }
-
 			} else if (move.compare("SPLIT") == 0 && allowSplit) {
 
                 player.handListSize++;
-
                 playerHandStruct *splitHand = &player.handList[1];
 
+                // Reset the size of hand.
                 player.handToDeal->handSize = 1;
                 splitHand->handSize = 1;
 
+                // Set first card in split hand to second card in hand being dealt to.
                 splitHand->handList[0] = player.handToDeal->handList[1];
 
+                // Deal a card to both hands.
                 deck.deal(player.handToDeal);
                 deck.deal(splitHand);
+
+                totalBetAmount += playerBet;
 
 			} else if (move.compare("DOUBLEDOWN") == 0 && allowDoubleDown) {
 
@@ -138,8 +137,23 @@ int main() {
                 std::cout << "Unrecognised Move" << std::endl;
 			}
 
+
+            // Check if hand is bust or 21.
+            if (player.handToDeal->value >= 21) {
+                finishMove = true;
+            }
+
+
             // Switch hand to split hand if move finished.
             if (finishMove == true) {
+
+                // Move to next hand.
+                if (player.handListSize > 1 && player.handToDeal != &player.handList[player.handListSize - 1]) {
+                    player.handToDeal++;
+                    finishMove = false;
+                } else {
+                    break;
+                }
             }
 
         }
