@@ -105,6 +105,19 @@ int main() {
                 }
 
 			} else if (move.compare("SPLIT") == 0 && allowSplit) {
+
+                player.handListSize++;
+
+                playerHandStruct *splitHand = &player.handList[1];
+
+                player.handToDeal->handSize = 1;
+                splitHand->handSize = 1;
+
+                splitHand->handList[0] = player.handToDeal->handList[1];
+
+                deck.deal(player.handToDeal);
+                deck.deal(splitHand);
+
 			} else if (move.compare("DOUBLEDOWN") == 0 && allowDoubleDown) {
 
                 deck.deal(player.handToDeal);
@@ -118,6 +131,7 @@ int main() {
 
             } else if (move.compare("SURRENDER") == 0) {
 
+                player.handToDeal->surrender = true;
                 finishMove = true;
 
 			} else {
