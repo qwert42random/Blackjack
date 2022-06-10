@@ -47,8 +47,9 @@ int main() {
         // Reset hands.
 		dealer.mainHand.handSize = 0;
 		player.handList[0].handSize = 0;
-        player.handListSize = 1;
+        player.resetHand();
 
+        // Set hand to be dealt to player's first hand.
         player.handToDeal = &player.handList[0];
 
 		// Deal the initial hand.
@@ -132,6 +133,7 @@ int main() {
 
             } else if (move.compare("SURRENDER") == 0) {
 
+                totalBetAmount -= playerBet / 2;
                 player.handToDeal->surrender = true;
                 finishMove = true;
 
@@ -141,7 +143,7 @@ int main() {
 
 
             // Check if hand is bust or 21.
-            if (player.handToDeal->value >= 21) {
+            if (player.handToDeal->value > 21) {
                 player.handToDeal->bust = true;
                 finishMove = true;
             }
@@ -166,12 +168,34 @@ int main() {
         }
 
 
-        std::cout << "----------break----------" << std::endl;
+        std::cout << "----------Dealer Turn----------" << std::endl;
         // Print hands for dealer and player.
         player.printHand();
-        dealer.printHand(true);
+        dealer.printHand(false);
 
-		break;
+        // Dealer wins automatically if all hands are bust.
+        int bustCount = 0;
+        for (int i = 0; i < player.handListSize; i++) {
+            if (player.handList[i].bust == true) {
+                bustCount++;
+            }
+        }
+
+        if (bustCount == player.handListSize) {
+            std::cout << "Dealer Wins!" << std::endl;
+            player.money -= totalBetAmount;
+            continue;
+        }
+
+        std::cout << "\nDealing to dealer...\n" << std::endl;
+
+        // Deal to dealer until hand has value of at least 17.
+        while (dealer.mainHand.value < 17) {
+            deck.deal(&dealer.mainHand);
+        }
+
+        dealer.printHand(false);
+
 	}
 
 

@@ -64,7 +64,9 @@ void Dealer::printHand(bool hideHole) {
         std::cout << "~~~Dealer~~~" << std::endl;
     }
 
-    std::cout << obtainHandString(mainHand, hideHole) << "? ";
+    std::cout << obtainHandString(mainHand, hideHole);
+
+    if (hideHole) std::cout << "? ";
 
     std::cout << "[";
 
@@ -89,6 +91,18 @@ void Dealer::printHand(bool hideHole) {
     }
 
     std::cout << "]" << std::endl;
+}
+
+void Player::resetHand() {
+    for (int i = 0; i < 4; i++) {
+        handList[i].doubleDown = false;
+        handList[i].surrender = false;
+        handList[i].stand = false;
+        handList[i].bust = false;
+
+        handList[i].handSize = 0;
+    }
+    handListSize = 1;
 }
 
 void Player::printHand() {

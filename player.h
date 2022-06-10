@@ -56,6 +56,7 @@ class Player {
         playerHandStruct *handToDeal = &handList[0];
         int handListSize = 1;
         void printHand();
+        void resetHand();
         bool go = false;
         
 };
