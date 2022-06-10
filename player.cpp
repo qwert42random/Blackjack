@@ -42,11 +42,9 @@ void Deck::shuffle() {
 
 void Deck::deal(handStruct *hand) {
 
-    // TODO: Delete this line when done.
-    std::cout << topCard->suit << " " << topCard->value << std::endl;
-
 	hand->handList[hand->handSize++] = *(topCard++);
     hand->value = calcHandValue(*hand);
+
 }
 
 void Deck::swap(card &a, card &b) {
@@ -60,10 +58,15 @@ void Deck::swap(card &a, card &b) {
 // Print Dealer's hand.
 void Dealer::printHand(bool hideHole) {
 
-    std::cout << "Dealer's Hand: ";
+    if (go) {
+        std::cout << "~~~[Dealer]~~~" << std::endl;
+    } else {
+        std::cout << "~~~Dealer~~~" << std::endl;
+    }
+
     std::cout << obtainHandString(mainHand, hideHole) << "? ";
 
-    std::cout << "(";
+    std::cout << "[";
 
     if (hideHole) {
 
@@ -85,17 +88,35 @@ void Dealer::printHand(bool hideHole) {
         std::cout << mainHand.value;
     }
 
-    std::cout << ")" << std::endl;
+    std::cout << "]" << std::endl;
 }
 
 void Player::printHand() {
 
     // Print Player's Hand.
-    std::cout << name << "'s Hand: ";
+    if (go) {
+        std::cout << "~~~[" << name << "]~~~" << std::endl;
+    } else {
+        std::cout << "~~~" << name << "~~~" << std::endl;
+    }
 
     for (int i = 0; i < handListSize; i++) {
+        if (handListSize > 1) std::cout << i << ": ";
         std::cout << obtainHandString(handList[i], false);
-        std::cout << "(" << handList[i].value << ")" << std::endl;
+        std::cout << "[" << handList[i].value << "] ";
+
+        if (handList[i].doubleDown) {
+            std::cout << "DOUBLEDOWN";
+        } else if (handList[i].surrender) {
+            std::cout << "SURR";
+        } else if (handList[i].stand) {
+            std::cout << "STAND";
+        } else if (handList[i].bust) {
+            std::cout << "BUST";
+        }
+
+        if (&handList[i] == handToDeal && handListSize > 1 && go) std::cout << "<-";
+        std::cout << "\n";
     }
 
 }

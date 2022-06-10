@@ -61,6 +61,7 @@ int main() {
         bool finishMove = false;
         bool allowSplit, allowDoubleDown;
         int totalBetAmount = playerBet;
+        player.go = true;
 
         while (true) {
             
@@ -126,6 +127,7 @@ int main() {
 
 			} else if (move.compare("STAND") == 0) {
 
+                player.handToDeal->stand = true;
                 finishMove = true;
 
             } else if (move.compare("SURRENDER") == 0) {
@@ -140,18 +142,23 @@ int main() {
 
             // Check if hand is bust or 21.
             if (player.handToDeal->value >= 21) {
+                player.handToDeal->bust = true;
                 finishMove = true;
             }
 
 
             // Switch hand to split hand if move finished.
             if (finishMove == true) {
+                std::cout << "Move Finished" << std::endl;
+                std::cout << "You bet: " << totalBetAmount << std::endl;
 
-                // Move to next hand.
+                // Move to next split hand.
                 if (player.handListSize > 1 && player.handToDeal != &player.handList[player.handListSize - 1]) {
                     player.handToDeal++;
                     finishMove = false;
                 } else {
+                    player.go = false;
+                    dealer.go = true;
                     break;
                 }
             }
@@ -161,8 +168,8 @@ int main() {
 
         std::cout << "----------break----------" << std::endl;
         // Print hands for dealer and player.
-        dealer.printHand(true);
         player.printHand();
+        dealer.printHand(true);
 
 		break;
 	}

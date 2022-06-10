@@ -19,6 +19,8 @@ struct handStruct {
 struct playerHandStruct: handStruct {
     bool doubleDown = false;
     bool surrender = false;
+    bool stand = false;
+    bool bust = false;
 };
 
 std::string obtainHandString(handStruct hand, bool hole);
@@ -42,6 +44,7 @@ class Dealer {
     public:
         handStruct mainHand;
         void printHand(bool hideHole);
+        bool go = false;
 
 };
 
@@ -53,5 +56,6 @@ class Player {
         playerHandStruct *handToDeal = &handList[0];
         int handListSize = 1;
         void printHand();
+        bool go = false;
         
 };
