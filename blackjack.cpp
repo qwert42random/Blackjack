@@ -143,8 +143,8 @@ int main() {
 
 
             // Check if hand is bust or 21.
-            if (player.handToDeal->value > 21) {
-                player.handToDeal->bust = true;
+            if (player.handToDeal->value >= 21) {
+                if (player.handToDeal->value > 21) player.handToDeal->bust = true;
                 finishMove = true;
             }
 
@@ -194,7 +194,32 @@ int main() {
             deck.deal(&dealer.mainHand);
         }
 
+        signed int moneyEarnt = 0;
+
+        // Check which hands lose against the dealer.
+        for (int i = 0; i < player.handListSize; i++) {
+            if (player.handList[i].value > dealer.mainHand.value && player.handList[i].bust == false) {
+
+                if (player.handList[i].doubleDown == true) {
+                    moneyEarnt += playerBet * 2;
+                } else if (player.handList[i].stand) {
+                    moneyEarnt += playerBet;
+                }
+
+            } else {
+
+                if (player.handList[i].doubleDown == true) {
+                    moneyEarnt -= playerBet * 2;
+                } else {
+                    moneyEarnt -= playerBet;
+                }
+            }
+        }
+
         dealer.printHand(false);
+
+        std::cout << "Money earnt: " << moneyEarnt << std::endl;
+        player.money += moneyEarnt;
 
 	}
 
