@@ -9,6 +9,7 @@ int main() {
     Dealer dealer;
 
     std::cout << "Blackjack C++ Edition" << std::endl;
+    std::cout << "EARLY ACCESS EDITION" << std::endl;
     std::cout << "Enter Name: ";
     std::cin >> player.name;
 
@@ -152,7 +153,6 @@ int main() {
             // Switch hand to split hand if move finished.
             if (finishMove == true) {
                 std::cout << "Move Finished" << std::endl;
-                std::cout << "You bet: " << totalBetAmount << std::endl;
 
                 // Move to next split hand.
                 if (player.handListSize > 1 && player.handToDeal != &player.handList[player.handListSize - 1]) {
@@ -173,18 +173,42 @@ int main() {
         player.printHand();
         dealer.printHand(false);
 
-        // Dealer wins automatically if all hands are bust.
-        int bustCount = 0;
+        // Check how many hands were surrendered or bust.
+        int handsLost = 0;
         for (int i = 0; i < player.handListSize; i++) {
-            if (player.handList[i].bust == true) {
-                bustCount++;
+
+            if (player.handList[i].bust == true || player.handList[i].surrender) {
+                handsLost++;
             }
+
         }
 
-        if (bustCount == player.handListSize) {
-            std::cout << "Dealer Wins!" << std::endl;
-            player.money -= totalBetAmount;
+        // If all player hands were either bust or surrendered.
+        if (handsLost == player.handListSize) {
+
+            std::cout << "Remaining money: ";
+
+            // Deduct money based on bust or surrender.
+            for (int i = 0; i < player.handListSize; i++) {
+                
+                if (player.handList[i].bust == true) {
+                    std::cout << player.money << " - " << playerBet;
+                    player.money -= playerBet;
+                } else if (player.handList[i].surrender) {
+                    std::cout << player.money << " - " << playerBet / 2;
+                    player.money -= playerBet / 2;
+                } else if (player.handList[i].doubleDown) {
+                    std::cout << player.money << " - " << playerBet * 2;
+                    player.money -= playerBet * 2;
+                }
+
+                std::cout << " = " << player.money << std::endl;
+
+            }
+
+            std::cout << "Dealer wins!" << std::endl;
             continue;
+
         }
 
         std::cout << "\nDealing to dealer...\n" << std::endl;
@@ -195,31 +219,51 @@ int main() {
         }
 
         signed int moneyEarnt = 0;
+        bool dealerBust = dealer.mainHand.value > 21;
 
-        // Check which hands lose against the dealer.
+        // Compare hands to dealer and update money accordingly.
         for (int i = 0; i < player.handListSize; i++) {
-            if (player.handList[i].value > dealer.mainHand.value && player.handList[i].bust == false) {
 
-                if (player.handList[i].doubleDown == true) {
-                    moneyEarnt += playerBet * 2;
-                } else if (player.handList[i].stand) {
-                    moneyEarnt += playerBet;
-                }
+            if (player.handList[i].surrender) {
 
-            } else {
+                // If hand has been surrendered.
+                moneyEarnt -= playerBet / 2;
 
+            } else if (player.handList[i].bust || (dealer.mainHand.value > player.handList[i].value && !dealerBust)) {
+
+                // If hand has been lost.
                 if (player.handList[i].doubleDown == true) {
                     moneyEarnt -= playerBet * 2;
                 } else {
                     moneyEarnt -= playerBet;
                 }
+                
+            } else if (dealerBust || (dealer.mainHand.value < player.handList[i].value && !player.handList[i].bust)) {
+
+                // If hand has been won.
+                if (player.handList[i].doubleDown == true) {
+                    moneyEarnt += playerBet * 2;
+                } else {
+                    moneyEarnt += playerBet;
+                }
+
             }
+
         }
 
+        player.printHand();
         dealer.printHand(false);
 
-        std::cout << "Money earnt: " << moneyEarnt << std::endl;
+        std::cout << "Remaining money: " << player.money;
+        if (moneyEarnt > 0) {
+            std::cout << " + " << moneyEarnt;
+        } else if (moneyEarnt < 0) {
+            std::cout << " - " << abs(moneyEarnt); 
+        } else if (moneyEarnt == 0) {
+            std::cout << " + 0";
+        }
         player.money += moneyEarnt;
+        std::cout << " = " << player.money << std::endl;
 
 	}
 

@@ -59,9 +59,9 @@ void Deck::swap(card &a, card &b) {
 void Dealer::printHand(bool hideHole) {
 
     if (go) {
-        std::cout << "~~~[Dealer]~~~" << std::endl;
+        std::cout << "[Dealer]" << std::endl;
     } else {
-        std::cout << "~~~Dealer~~~" << std::endl;
+        std::cout << "Dealer" << std::endl;
     }
 
     std::cout << obtainHandString(mainHand, hideHole);
@@ -109,9 +109,9 @@ void Player::printHand() {
 
     // Print Player's Hand.
     if (go) {
-        std::cout << "~~~[" << name << "]~~~" << std::endl;
+        std::cout << "[" << name << "]" << std::endl;
     } else {
-        std::cout << "~~~" << name << "~~~" << std::endl;
+        std::cout << name << std::endl;
     }
 
     for (int i = 0; i < handListSize; i++) {
@@ -129,7 +129,7 @@ void Player::printHand() {
             std::cout << "BUST";
         }
 
-        if (&handList[i] == handToDeal && handListSize > 1 && go) std::cout << "<-";
+        if (go) std::cout << "<-";
         std::cout << "\n";
     }
 
