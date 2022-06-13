@@ -17,7 +17,7 @@ int main() {
     while(player.money > 0) {
         
         bool validBet = false;
-		int playerBet;
+        int playerBet;
 
         // Prompt player for bet amount.
         while (validBet == false) {
@@ -63,9 +63,14 @@ int main() {
         bool finishMove = false;
         bool allowSplit, allowDoubleDown;
         int totalBetAmount = playerBet;
-        player.go = true;
 
-        while (true) {
+        if (player.handToDeal->value == 21) {
+            player.go = false;
+        } else {
+            player.go = true;
+        }
+
+        while (player.go) {
             
             // Check if splitting is allowed.
             if (player.handToDeal->handList[0].value == player.handToDeal->handList[1].value && player.handToDeal->handSize == 2 && totalBetAmount + playerBet <= player.money) {
