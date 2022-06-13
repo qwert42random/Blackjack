@@ -68,14 +68,14 @@ int main() {
         while (true) {
             
             // Check if splitting is allowed.
-            if (player.handToDeal->handList[0].value == player.handToDeal->handList[1].value && player.handToDeal->handSize == 2 && totalBetAmount + playerBet < player.money) {
+            if (player.handToDeal->handList[0].value == player.handToDeal->handList[1].value && player.handToDeal->handSize == 2 && totalBetAmount + playerBet <= player.money) {
                  allowSplit = true;
             } else {
                 allowSplit = false;
             }
 
             // Check if doubling down is allowed.
-            if (player.handToDeal->handSize == 2 && totalBetAmount + playerBet < player.money) {
+            if (player.handToDeal->handSize == 2 && totalBetAmount + playerBet <= player.money) {
                 allowDoubleDown = true;
             } else {
                 allowDoubleDown = false;
