@@ -129,7 +129,7 @@ void Player::printHand() {
             std::cout << "BUST";
         }
 
-        if (go) std::cout << "<-";
+        if (go && handToDeal == &handList[i]) std::cout << "<-";
         std::cout << "\n";
     }
 
